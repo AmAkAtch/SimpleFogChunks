@@ -1,5 +1,10 @@
 package de.draradech.simplefog.mixin;
 
+import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.injection.At;
+import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+
 import de.draradech.simplefog.SimpleFogConfig;
 import de.draradech.simplefog.SimpleFogMain;
 import net.minecraft.client.DeltaTracker;
@@ -10,10 +15,6 @@ import net.minecraft.client.renderer.fog.environment.AtmosphericFogEnvironment;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.level.levelgen.Heightmap;
-import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.injection.At;
-import org.spongepowered.asm.mixin.injection.Inject;
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(AtmosphericFogEnvironment.class)
 public class AtmosphericFogEnvironmentMixin {
@@ -27,6 +28,7 @@ public class AtmosphericFogEnvironmentMixin {
     @Inject(at = @At("TAIL"), method = "setupFog(Lnet/minecraft/client/renderer/fog/FogData;Lnet/minecraft/world/entity/Entity;Lnet/minecraft/core/BlockPos;Lnet/minecraft/client/multiplayer/ClientLevel;FLnet/minecraft/client/DeltaTracker;)V")
     public void tailSetupFog(FogData fogData, Entity entity, BlockPos blockPos, ClientLevel clientLevel, float viewDistance, DeltaTracker deltaTracker, CallbackInfo ci)
     {
+        viewDistance = 28.0f;
         SimpleFogConfig.RainConfig rainConf = SimpleFogMain.config.rainConfig;
         if (!rainConf.rainToggle) return;
 
